@@ -12,24 +12,48 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+
+
+    public static void main(String[] args) throws IOException, SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:h2:file:/Users/a/zxh-crawler/news");
+
+
         //Create a pool to hold links
         List<String> linkpool = new ArrayList<>();
+        //从数据库加载即将处理的链接的代码
+        try (PreparedStatement statement = connection.prepareStatement("select link from LINKS_TO_BE_PROCESSED")) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                linkpool.add(resultSet.getString(1));
+            }
+        }
+
+        //从数据库加载已经处理的链接的代码
+
         Set<String> processedLinks = new HashSet<>();
         //At the beginning, there was only sina's home page
         linkpool.add("http://sina.cn");
+        try (PreparedStatement statement = connection.prepareStatement("select link from LINKS_ALREADY_PROCESSED")) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                processedLinks.add(resultSet.getString(1));
+            }
+        }
 
         while (true) {
             if (linkpool.isEmpty()) {
                 break;
             }
             //Arraylist从尾部删除更有效率
+            //处理完后更新数据库
+
             String link = linkpool.remove(linkpool.size() - 1);
 
             if (processedLinks.contains(link)) {
@@ -37,14 +61,13 @@ public class Main {
             }
             if (isInterestingLink(link)) {
                 //感兴趣的
-                Document doc=httpGetAndParseHtml(link);
+                Document doc = httpGetAndParseHtml(link);
 
-                doc.select("a").stream().map(aTag->aTag.attr("href")).forEach(linkpool::add);
+                doc.select("a").stream().map(aTag -> aTag.attr("href")).forEach(linkpool::add);
 
                 storeIntoDatabaseIfItIsNewsPage(doc);
+
                 processedLinks.add(link);
-            } else {
-                //这是我们不感兴趣的
             }
         }
 

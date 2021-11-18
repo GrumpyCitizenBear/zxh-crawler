@@ -110,6 +110,12 @@
                             <artifactId>checkstyle</artifactId>
                             <version>8.29</version>
                         </dependency>
+                        <dependency>
+                            <groupId>com.h2database</groupId>
+                            <artifactId>h2</artifactId>
+                            <version>1.4.199</version>
+                            <scope>compile</scope>
+                        </dependency>
                     </dependencies>
                 </plugin>
             <plugin>
@@ -117,13 +123,21 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.4.2.2</version>
                 <dependencies>
-                    <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
                     <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
                         <version>4.5.0</version>
                     </dependency>
                 </dependencies>
+                <executions>
+                    <execution>
+                        <id>spotbugs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

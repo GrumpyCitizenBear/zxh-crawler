@@ -1,0 +1,106 @@
+2021-11-14 20:25:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLFeatureNotSupportedException: Feature not supported: "getFunctions" [50100-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:507)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.getUnsupportedException(DbException.java:269)
+	at org.h2.message.TraceObject.unsupported(TraceObject.java:398)
+	at org.h2.jdbc.JdbcDatabaseMetaData.getFunctions(JdbcDatabaseMetaData.java:3273)
+	at net.sourceforge.squirrel_sql.fw.sql.databasemetadata.ProcedureAndFunctionMetaData._getFunctionInfos(ProcedureAndFunctionMetaData.java:109)
+	at net.sourceforge.squirrel_sql.fw.sql.databasemetadata.ProcedureAndFunctionMetaData.getFunctionInfos(ProcedureAndFunctionMetaData.java:95)
+	at net.sourceforge.squirrel_sql.fw.sql.databasemetadata.SQLDatabaseMetaData.getProcedures(SQLDatabaseMetaData.java:744)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.privateLoadStoredProcedures(SchemaInfo.java:531)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.loadStoredProcedures(SchemaInfo.java:367)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.privateLoadAll(SchemaInfo.java:305)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.initialLoad(SchemaInfo.java:181)
+	at net.sourceforge.squirrel_sql.client.session.Session$1.run(Session.java:253)
+	at net.sourceforge.squirrel_sql.fw.util.TaskExecuter.run(TaskExecuter.java:82)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2021-11-14 20:37:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE NEWS(
+ID BIGINT PRIMARY_KEY[*] AUTO_INCREMENT,
+TITLE TEXT,
+CONTENT TEXT,
+URL VARCHAR(100),
+CREATED_AT TIMESTAMP,
+MODIFIED_AT TIMESTAMP
+)"; expected "(, FOR, UNSIGNED, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, COMMENT, CHECK, REFERENCES, ,, )"; SQL statement:
+create table NEWS(
+id bigint primary_key auto_increment,
+title text,
+content text,
+url varchar(100),
+created_at timestamp,
+modified_at timestamp
+) [42001-200]
+2021-11-14 20:38:31 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE NEWS (
+ID BIGINT PRIMARY_KEY[*] AUTO_INCREMENT,
+TITLE TEXT,
+CONTENT TEXT,
+URL VARCHAR(100),
+CREATED_AT TIMESTAMP,
+MODIFIED_AT TIMESTAMP
+)"; expected "(, FOR, UNSIGNED, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, COMMENT, CHECK, REFERENCES, ,, )"; SQL statement:
+create table NEWS (
+id bigint primary_key auto_increment,
+title text,
+content text,
+url varchar(100),
+created_at timestamp,
+modified_at timestamp
+) [42001-200]
+2021-11-14 20:39:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE NEWS (
+ID BIGINT PRIMARY_KEY[*] AUTO_INCREMENT,
+TITLE TEXT,
+CONTENT TEXT,
+URL VARCHAR(100),
+CREATED_AT TIMESTAMP,
+MODIFIED_AT TIMESTAMP
+)"; expected "(, FOR, UNSIGNED, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, COMMENT, CHECK, REFERENCES, ,, )"; SQL statement:
+create table news (
+id bigint primary_key auto_increment,
+title text,
+content text,
+url varchar(100),
+created_at timestamp,
+modified_at timestamp
+) [42001-200]
+2021-11-14 20:39:45 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE NEWS (
+ID BIGINT PRIMARY_KEY[*] AUTO_INCREMENT,
+TITLE TEXT,
+CONTENT TEXT,
+URL VARCHAR(100),
+CREATED_AT TIMESTAMP,
+MODIFIED_AT TIMESTAMP
+)"; expected "(, FOR, UNSIGNED, INVISIBLE, VISIBLE, NOT, NULL, AS, DEFAULT, GENERATED, ON, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, COMMENT, CHECK, REFERENCES, ,, )"; SQL statement:
+create table news (
+id bigint primary_key auto_increment,
+title text,
+content text,
+url varchar(100),
+created_at timestamp,
+modified_at timestamp
+) [42001-200]
+2021-11-18 09:23:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLFeatureNotSupportedException: Feature not supported: "getFunctions" [50100-200]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:507)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:429)
+	at org.h2.message.DbException.get(DbException.java:205)
+	at org.h2.message.DbException.get(DbException.java:181)
+	at org.h2.message.DbException.getUnsupportedException(DbException.java:269)
+	at org.h2.message.TraceObject.unsupported(TraceObject.java:398)
+	at org.h2.jdbc.JdbcDatabaseMetaData.getFunctions(JdbcDatabaseMetaData.java:3273)
+	at net.sourceforge.squirrel_sql.fw.sql.databasemetadata.ProcedureAndFunctionMetaData._getFunctionInfos(ProcedureAndFunctionMetaData.java:109)
+	at net.sourceforge.squirrel_sql.fw.sql.databasemetadata.ProcedureAndFunctionMetaData.getFunctionInfos(ProcedureAndFunctionMetaData.java:95)
+	at net.sourceforge.squirrel_sql.fw.sql.databasemetadata.SQLDatabaseMetaData.getProcedures(SQLDatabaseMetaData.java:744)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.privateLoadStoredProcedures(SchemaInfo.java:531)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.loadStoredProcedures(SchemaInfo.java:367)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.privateLoadAll(SchemaInfo.java:305)
+	at net.sourceforge.squirrel_sql.client.session.schemainfo.SchemaInfo.initialLoad(SchemaInfo.java:181)
+	at net.sourceforge.squirrel_sql.client.session.Session$1.run(Session.java:253)
+	at net.sourceforge.squirrel_sql.fw.util.TaskExecuter.run(TaskExecuter.java:82)
+	at java.base/java.lang.Thread.run(Thread.java:833)
