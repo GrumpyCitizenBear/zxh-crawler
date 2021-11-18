@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.lang.model.element.NestingKind;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,58 +20,66 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
-
+    private static List<String> loadUrlsFromDatabase(Connection connection, String sql) throws SQLException {
+        List<String> results = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                results.add(resultSet.getString(1));
+            }
+        }
+        return results;
+    }
 
     public static void main(String[] args) throws IOException, SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:h2:file:/Users/a/zxh-crawler/news");
-
-
-        //Create a pool to hold links
-        List<String> linkpool = new ArrayList<>();
-        //从数据库加载即将处理的链接的代码
-        try (PreparedStatement statement = connection.prepareStatement("select link from LINKS_TO_BE_PROCESSED")) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                linkpool.add(resultSet.getString(1));
-            }
-        }
-
-        //从数据库加载已经处理的链接的代码
-
-        Set<String> processedLinks = new HashSet<>();
-        //At the beginning, there was only sina's home page
-        linkpool.add("http://sina.cn");
-        try (PreparedStatement statement = connection.prepareStatement("select link from LINKS_ALREADY_PROCESSED")) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                processedLinks.add(resultSet.getString(1));
-            }
-        }
-
+        Connection connection = DriverManager.getConnection("jdbc:h2:file:/Users/a/zxh-crawler/news", "zxh", "123456");
         while (true) {
+            //Create a pool to hold links
+            List<String> linkpool = loadUrlsFromDatabase(connection, "SELECT LINK FROM LINKS_TO_BE_PROCESSED");
+
+            //Set<String> processedLinks = new HashSet<>(loadUrlsFromDatabase(connection, "select link from LINKS_ALREADY_PROCESSED"));
+
             if (linkpool.isEmpty()) {
                 break;
             }
-            //Arraylist从尾部删除更有效率
-            //处理完后更新数据库
-
+            //从待处理池子中捞一个处理
+            //处理完后从池子（包括数据库）中删除，
             String link = linkpool.remove(linkpool.size() - 1);
-
-            if (processedLinks.contains(link)) {
+            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM LINKS_TO_BE_PROCESSED where link = ?")) {
+                statement.setString(1, link);
+                statement.executeUpdate();
+            }
+            boolean flag = false;
+            try (PreparedStatement statement = connection.prepareStatement("SELECT LINK from LINKS_TO_BE_PROCESSED where link = ?")) {
+                statement.setString(1, link);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    flag = true;
+                }
+            }
+            if (flag) {
                 continue;
             }
             if (isInterestingLink(link)) {
                 //感兴趣的
                 Document doc = httpGetAndParseHtml(link);
 
-                doc.select("a").stream().map(aTag -> aTag.attr("href")).forEach(linkpool::add);
+                for (Element aTag : doc.select("a")) {
+                    String href = aTag.attr("href");
+                    try (PreparedStatement statement = connection.prepareStatement("INSERT INTO LINKS_TO_BE_PROCESSED (link)values(?)")) {
+                        statement.setString(1, href);
+                        statement.executeUpdate();
+                    }
+                }
 
                 storeIntoDatabaseIfItIsNewsPage(doc);
 
-                processedLinks.add(link);
+                try (PreparedStatement statement = connection.prepareStatement("INSERT INTO LINKS_ALREADY_PROCESSED (link)values(?)")) {
+                    statement.setString(1, link);
+                    statement.executeUpdate();
+                }
             }
         }
-
     }
 
     private static void storeIntoDatabaseIfItIsNewsPage(Document doc) {
