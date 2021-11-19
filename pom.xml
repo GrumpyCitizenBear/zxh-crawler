@@ -142,6 +142,16 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>5.2.4</version>
+                <configuration>
+                    <url>jdbc:h2:file:/Users/a/zxh-crawler/news</url>
+                    <user>zxh</user>
+                    <password>123456</password>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
